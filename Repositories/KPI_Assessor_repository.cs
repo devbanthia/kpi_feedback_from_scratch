@@ -5,6 +5,7 @@ using kpi_feedback_from_scratch.Models.Domain.KPI_Assignment;
 
 using kpi_feedback_from_scratch.Models.Domain.User;
 using kpi_feedback_from_scratch.Models.DTO;
+using kpi_feedback_from_scratch.Models.enums;
 using System.Linq;
 
 namespace kpi_feedback_from_scratch.Repositories
@@ -31,7 +32,10 @@ namespace kpi_feedback_from_scratch.Repositories
             {
                 KPI_AssignmentId = kpi_assignment.Id,
                 AssessorId = assessor.Id,
-                AssessorStatus = "active"
+                AssessorStatus = "active",
+                KPI_Assessment_Assign_Date = DateTime.Now,
+                KPI_Assessment_Due_Date = CalculateDueDate(kpi_assignment.Id)
+
             };
 
             dbcontext.kpi_assessor.Add( kpi_assessor );
@@ -72,7 +76,33 @@ namespace kpi_feedback_from_scratch.Repositories
             return false;
         }
 
-      
+        public DateTime CalculateDueDate(int kpi_assignment_id)
+        {
+            KPI_Assignment kpi_assignment = kpi_assignment_repository.get_kpi_assignment_by_id(kpi_assignment_id);
+
+            if (kpi_assignment.rating_frequency_id == 0)
+            {
+                return DateTime.Now.AddMonths(1);
+            }
+
+            else if (kpi_assignment.rating_frequency_id == 1)
+            {
+                return DateTime.Now.AddMonths(3);
+            }
+
+            else if (kpi_assignment.rating_frequency_id == 2)
+            {
+                return DateTime.Now.AddMonths(6);
+            }
+
+            else
+            {
+                return DateTime.Now.AddMonths(12);
+            }
+
+        }
+
+
 
         public List<KPI_Assessor_View> get_kpi_assessor_view(int[] assessor_id)
 
@@ -99,7 +129,18 @@ namespace kpi_feedback_from_scratch.Repositories
                     assessor_name = employee.Name,
                     assessor_designation = employee.Level,
                     assessor_division = employee.Division,
+                    KPI_Assessment_Due_Date = ka.KPI_Assessment_Due_Date
+   
                 };
+
+                if (DateTime.Now > ka.KPI_Assessment_Due_Date)
+                {
+                    kpi_assessor_view.status = assessor_status.pending.ToString();
+                }
+                else
+                {
+                    kpi_assessor_view.status = assessor_status.due.ToString();
+                }
 
                 kpi_assessors_list.Add(kpi_assessor_view);
                    
@@ -109,5 +150,7 @@ namespace kpi_feedback_from_scratch.Repositories
 
 
         }
+
+
     }
 }
