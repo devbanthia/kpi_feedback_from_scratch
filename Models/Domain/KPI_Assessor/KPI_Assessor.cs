@@ -14,8 +14,5 @@ namespace kpi_feedback_from_scratch.Models.Domain.KPI_Assessor
 
         public DateTime KPI_Assessment_Assign_Date { get; set; }
 
-        public DateTime KPI_Assessment_Due_Date { get; set; }   
-
-
     }
 }

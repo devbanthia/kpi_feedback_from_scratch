@@ -11,7 +11,7 @@ namespace kpi_feedback_from_scratch.Repositories
 
 
 
-        public List<Assessor_Feedback_View> get_all();
+        public List<Assessor_Feedback_View> get_all(int? authenticated_assessor_id);
         
 
         public KPI_AssessorFeedback get_by_id(int id);
@@ -26,7 +26,14 @@ namespace kpi_feedback_from_scratch.Repositories
         
 
         public Feedback_view get_feedback_view(KPI_AssessorFeedback feedback);
-        
+
+        public void enter_feedback_date(KPI_AssessorFeedback kpi_assessor_feedback);
+
+        public DateTime? get_latest_feedback_by_assessor_id(int kpi_assessor_id);
+
+        public bool feedback_already_exists(KPI_AssessorFeedback feedback);
+
+
 
 
     }

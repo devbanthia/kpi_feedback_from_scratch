@@ -5,13 +5,16 @@ using kpi_feedback_from_scratch.Models.Domain.KPI_Assignment;
 using kpi_feedback_from_scratch.Models.Domain.User;
 using kpi_feedback_from_scratch.Models.DTO;
 using kpi_feedback_from_scratch.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace kpi_feedback_from_scratch.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = "admin")]
     public class KPI_AssignmentController : ControllerBase
     {
         private IKPI_Assessor_repository kpi_assessor_repository;

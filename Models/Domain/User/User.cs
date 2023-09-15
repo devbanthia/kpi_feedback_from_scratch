@@ -10,5 +10,9 @@ namespace kpi_feedback_from_scratch.Models.Domain.User
         public int designationId { get; set; }    
         public int divisionId { get; set; }
         public int? gradeId { get; set; }
+
+        public string password { get; set; }
+
+
     }
 }

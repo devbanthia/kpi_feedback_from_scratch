@@ -6,6 +6,7 @@ using kpi_feedback_from_scratch.Models.Domain.KPI_Assignment;
 using kpi_feedback_from_scratch.Models.Domain.User;
 using kpi_feedback_from_scratch.Models.DTO;
 using kpi_feedback_from_scratch.Models.enums;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace kpi_feedback_from_scratch.Repositories
@@ -33,8 +34,7 @@ namespace kpi_feedback_from_scratch.Repositories
                 KPI_AssignmentId = kpi_assignment.Id,
                 AssessorId = assessor.Id,
                 AssessorStatus = "active",
-                KPI_Assessment_Assign_Date = DateTime.Now,
-                KPI_Assessment_Due_Date = CalculateDueDate(kpi_assignment.Id)
+                KPI_Assessment_Assign_Date = DateTime.Now
 
             };
 
@@ -56,9 +56,9 @@ namespace kpi_feedback_from_scratch.Repositories
             return query.ToList();
         }
 
-        public KPI_Assessor find_kpi_assessor(int assessor_id)
+        public KPI_Assessor find_kpi_assessor(int kpi_assessor_id)
         {
-            return dbcontext.kpi_assessor.FirstOrDefault(x => x.AssessorId == assessor_id);
+            return dbcontext.kpi_assessor.FirstOrDefault(x => x.Id== kpi_assessor_id);
         }
 
         public void delete(KPI_Assessor kpi_assesor)
@@ -76,28 +76,28 @@ namespace kpi_feedback_from_scratch.Repositories
             return false;
         }
 
-        public DateTime CalculateDueDate(int kpi_assignment_id)
+        public TimeSpan calculate_rating_period(int kpi_assignment_id)
         {
             KPI_Assignment kpi_assignment = kpi_assignment_repository.get_kpi_assignment_by_id(kpi_assignment_id);
 
-            if (kpi_assignment.rating_frequency_id == 0)
+            if (kpi_assignment.rating_frequency_id == 1)
             {
-                return DateTime.Now.AddMonths(1);
-            }
-
-            else if (kpi_assignment.rating_frequency_id == 1)
-            {
-                return DateTime.Now.AddMonths(3);
+                return DateTime.Now.AddMonths(1) - DateTime.Now;
             }
 
             else if (kpi_assignment.rating_frequency_id == 2)
             {
-                return DateTime.Now.AddMonths(6);
+                return DateTime.Now.AddMonths(3) - DateTime.Now;
+            }
+
+            else if (kpi_assignment.rating_frequency_id == 3)
+            {
+                return DateTime.Now.AddMonths(6) - DateTime.Now;
             }
 
             else
             {
-                return DateTime.Now.AddMonths(12);
+                return DateTime.Now.AddMonths(12) - DateTime.Now;
             }
 
         }
@@ -129,24 +129,36 @@ namespace kpi_feedback_from_scratch.Repositories
                     assessor_name = employee.Name,
                     assessor_designation = employee.Level,
                     assessor_division = employee.Division,
-                    KPI_Assessment_Due_Date = ka.KPI_Assessment_Due_Date
+                    
    
                 };
 
-                if (DateTime.Now > ka.KPI_Assessment_Due_Date)
-                {
-                    kpi_assessor_view.status = assessor_status.pending.ToString();
-                }
-                else
-                {
-                    kpi_assessor_view.status = assessor_status.due.ToString();
-                }
+               
 
                 kpi_assessors_list.Add(kpi_assessor_view);
                    
             }
 
             return kpi_assessors_list;
+
+
+        }
+
+        public List<int> get_employee_supervisor(int employee_id)
+        {
+            var query = from kpi_assignment in dbcontext.kpi_assignment.AsNoTracking()
+                        join kpi_assessor in dbcontext.kpi_assessor.AsNoTracking() on kpi_assignment.Id equals kpi_assessor.KPI_AssignmentId
+                        where kpi_assignment.Employee_Id == employee_id
+                        select kpi_assessor.AssessorId;
+
+            List<int> assessor_id = new List<int>();
+            foreach (var item in query)
+            {
+                assessor_id.Add(item);
+            }
+
+            return assessor_id;
+
 
 
         }

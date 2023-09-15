@@ -7,7 +7,7 @@ using System.Text;
 
 namespace kpi_feedback_from_scratch.Repositories
 {
-    public class Token_repository
+    public class Token_repository : IToken_repository
     {
         private IConfiguration configuration;
         private kpi_feedback_dbcontext dbcontext;

@@ -2,6 +2,7 @@
 {
     public class Feedback_Notification
     {
+        public int Id { get; set; } 
         public int notification_from { get; set; }
         public int notification_to { get; set;}
         public string message { get; set; }

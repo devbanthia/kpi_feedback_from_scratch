@@ -23,7 +23,11 @@ namespace kpi_feedback_from_scratch.Repositories
 
         public List<KPI_Assessor> find_kpi_assessor(int[] assessor_id);
 
-        public KPI_Assessor find_kpi_assessor(int assessor_id);
+        public KPI_Assessor find_kpi_assessor(int kpi_assessor_id);
+
+        public List<int> get_employee_supervisor(int employee_id);
+
+        public TimeSpan calculate_rating_period(int kpi_assignment_id);
 
     }
 }

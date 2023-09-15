@@ -9,5 +9,7 @@
         public string? AreaOfStrength { get; set; }
 
         public string? Improvement { get; set; }
+
+        public string? Assessment_Period { get; set; }
     }
 }

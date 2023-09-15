@@ -1,6 +1,7 @@
 ﻿using kpi_feedback_from_scratch.Models.Domain.KPI;
 using kpi_feedback_from_scratch.Models.DTO;
 using kpi_feedback_from_scratch.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace kpi_feedback_from_scratch.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(Roles = "admin")]
     public class KPIController : ControllerBase
     {
         private IKPI_repository kpi_repository;
@@ -106,7 +108,7 @@ namespace kpi_feedback_from_scratch.Controllers
         }
 
         [HttpPut("/{id}")]
-        public IActionResult Update([FromQuery] int id, KPI_Input updated_kpi)
+        public IActionResult Update(int id, KPI_Input updated_kpi)
         {
             KPI kpi_to_be_updated = kpi_repository.get_kpi_by_id(id);
 

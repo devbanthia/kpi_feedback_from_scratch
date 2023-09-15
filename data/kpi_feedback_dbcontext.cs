@@ -1,4 +1,5 @@
-﻿using kpi_feedback_from_scratch.Models.Domain.Feedback_Notification;
+﻿using kpi_feedback_from_scratch.Models.Domain.Escalation;
+using kpi_feedback_from_scratch.Models.Domain.Feedback_Notification;
 using kpi_feedback_from_scratch.Models.Domain.KPI;
 using kpi_feedback_from_scratch.Models.Domain.KPI_Assessor;
 using kpi_feedback_from_scratch.Models.Domain.KPI_AssessorFeedback;
@@ -30,6 +31,7 @@ namespace kpi_feedback_from_scratch.data
         public DbSet<Grade> grade { get; set; } 
         public DbSet<Designation> designation { get; set; }
         public DbSet<Feedback_Notification> feedback_notification { get; set;}
+        public DbSet<Escalation> escalation { get; set; }
 
 
 

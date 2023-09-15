@@ -16,6 +16,9 @@ namespace kpi_feedback_from_scratch.Models.Domain.KPI_AssessorFeedback
         public string? AreaOfStrength { get; set; }
 
         public string? Improvement { get; set; } 
+        public DateTime? Next_Feedback_Date { get; set; }
+
+
 
     }
 }
